@@ -39,6 +39,11 @@ public class CredentialsManagerImpl implements CredentialsManager {
 
     @Override
     public boolean registerUser(String userName, String password) {
+        else return account;
+    }
+
+    @Override
+    public boolean registerUser(String userName, String password) throws UserExistsException {
         try {
             // yeeeeeeah, big brain time
             logIn(userName, password);
@@ -75,5 +80,4 @@ public class CredentialsManagerImpl implements CredentialsManager {
         }
         return "";
     }
-
 }
