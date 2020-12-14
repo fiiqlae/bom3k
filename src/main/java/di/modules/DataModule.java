@@ -7,7 +7,7 @@ import data.database.CredentialsManagerImpl;
 import data.database.Database;
 import data.database.DatabaseImpl;
 
-public class ApplicationModule extends AbstractModule {
+public class DataModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Database.class).to(DatabaseImpl.class).in(Scopes.SINGLETON);

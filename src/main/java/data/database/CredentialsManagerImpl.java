@@ -3,7 +3,7 @@ package data.database;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import data.models.UserAccountDataModel;
-import di.modules.ApplicationModule;
+import di.modules.DataModule;
 
 import javax.security.auth.login.LoginException;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +19,7 @@ public class CredentialsManagerImpl implements CredentialsManager {
     Database db;
 
     public CredentialsManagerImpl() {
-        Injector injector = Guice.createInjector(new ApplicationModule());
+        Injector injector = Guice.createInjector(new DataModule());
         db = injector.getInstance(Database.class);
     }
 
@@ -64,7 +64,7 @@ public class CredentialsManagerImpl implements CredentialsManager {
         return "";
     }
 
-    static class UserExistsException extends Exception{
+    public static class UserExistsException extends Exception{
         public UserExistsException(String message) {
             super(message);
         }
