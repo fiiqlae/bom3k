@@ -64,7 +64,7 @@ public class CredentialsManagerImpl implements CredentialsManager {
         return "";
     }
 
-    static class UserExistsException extends Throwable {
+    static class UserExistsException extends Exception{
         public UserExistsException(String message) {
             super(message);
         }
