@@ -59,4 +59,5 @@ public class DatabaseConfig {
                    "currency = ?" +
                    "WHERE id = ?";
    public static String queryDeleteUser = "DELETE FROM users WHERE id = ?";
+   public static String querySelectUserByHash = "SELECT * FROM users WHERE passwordHash = ?";
 }
