@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import data.database.CredentialsManager;
 import data.database.CredentialsManagerImpl;
+import data.exceptions.UserExistsException;
 import data.models.UserAccountDataModel;
 import di.modules.DataModule;
 import domain.interfaces.RegisterUseCase;
@@ -21,12 +22,12 @@ public class RegisterUseCaseImpl implements RegisterUseCase {
     }
 
     @Override
-    public boolean register(String username, String password) throws CredentialsManagerImpl.UserExistsException {
+    public boolean register(String username, String password) throws UserExistsException {
         return credentialsManager.registerUser(username, password);
     }
 
     @Override
-    public UserAccountPresentationModel registerAndLogIn(String username, String password) throws CredentialsManagerImpl.UserExistsException, LoginException {
+    public UserAccountPresentationModel registerAndLogIn(String username, String password) throws UserExistsException, LoginException {
         if(register(username, password)) {
             UserAccountDataModel dataModel = credentialsManager.logIn(username, password);
             return new UserAccountPresentationModel(dataModel.getUsername(),

@@ -4,9 +4,9 @@ public class UserAccountDataModel {
     private final String username;
     private final String passwordHash;
     private final long id;
-    private final String country;
-    private final String city;
-    private final String currency;
+    private String country;
+    private String city;
+    private String currency;
 
     public UserAccountDataModel(String username, String passwordHash, long id, String country, String city, String currency) {
         this.username = username;
@@ -39,5 +39,17 @@ public class UserAccountDataModel {
 
     public String getCurrency() {
         return currency;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
