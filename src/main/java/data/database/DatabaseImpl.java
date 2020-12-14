@@ -157,16 +157,16 @@ public class DatabaseImpl implements Database {
     private TransactionDataModel toTransactionDataModel(ResultSet resultSet) throws SQLException {
         return (new TransactionDataModel(
                 resultSet.getLong(11),
-                resultSet.getLong(10),
-                resultSet.getString(1),
-                (resultSet.getString(2).equals("spending"))? TransactionKind.SPENDING : TransactionKind.INCOME,
-                resultSet.getBoolean(3),
-                resultSet.getString(4),
+                resultSet.getLong(1),
+                resultSet.getString(2),
+                (resultSet.getString(3).equals("spending"))? TransactionKind.SPENDING : TransactionKind.INCOME,
+                resultSet.getBoolean(4),
                 resultSet.getString(5),
                 resultSet.getString(6),
                 resultSet.getString(7),
                 resultSet.getString(8),
-                resultSet.getString(9)));
+                resultSet.getString(9),
+                resultSet.getString(10)));
     }
 
     private UserAccountDataModel toUserAccountDataModel(ResultSet resultSet) throws SQLException {
