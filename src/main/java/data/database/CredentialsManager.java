@@ -1,6 +1,10 @@
 package data.database;
 
+import data.models.UserAccountDataModel;
+
+import javax.security.auth.login.LoginException;
+
 public interface CredentialsManager {
-    boolean checkCredentials(String userName, String password);
-    boolean registerUser(String userName, String password);
+    UserAccountDataModel logIn(String userName, String password) throws LoginException;
+    boolean registerUser(String userName, String password) throws CredentialsManagerImpl.UserExistsException;
 }

@@ -122,6 +122,24 @@ public class DatabaseImpl implements Database {
         }
     }
 
+    @Override
+    public UserAccountDataModel selectUserByPasswordHash(String hash) {
+        UserAccountDataModel queryResult;
+        try {
+            PreparedStatement statement =
+                    activeConnection.prepareStatement(DatabaseConfig.querySelectUserByHash);
+            statement.setString(1, hash);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                return toUserAccountDataModel(resultSet);
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(Database.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
     private TransactionDataModel toTransactionDataModel(ResultSet resultSet) throws SQLException {
         return (new TransactionDataModel(
                 resultSet.getLong(11),
@@ -135,6 +153,17 @@ public class DatabaseImpl implements Database {
                 resultSet.getString(7),
                 resultSet.getString(8),
                 resultSet.getString(9)));
+    }
+
+    private UserAccountDataModel toUserAccountDataModel(ResultSet resultSet) throws SQLException {
+        return new UserAccountDataModel(
+                resultSet.getString(1),
+                resultSet.getString(2),
+                resultSet.getLong(3),
+                resultSet.getString(4),
+                resultSet.getString(5),
+                resultSet.getString(6)
+        );
     }
 
     private PreparedStatement toUpdateTransactionQuery(TransactionDataModel transactionDataModel) throws SQLException {

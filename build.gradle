@@ -21,4 +21,5 @@ dependencies {
     compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
     compile group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.0.4'
+    compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
 }
