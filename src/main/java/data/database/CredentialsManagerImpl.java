@@ -75,5 +75,4 @@ public class CredentialsManagerImpl implements CredentialsManager {
         }
         return "";
     }
-
 }
