@@ -1,10 +1,8 @@
-package data.models;
+package presentation.models;
 
 import commonDefenitions.TransactionKind;
 
-public class TransactionDataModel {
-    private final long              userId;
-    private final long              transactionId;
+public class TransactionPresentationModel {
     private String                  transactionName;
     private TransactionKind         kind;
     private boolean                 isPeriodical;
@@ -15,9 +13,7 @@ public class TransactionDataModel {
     private String                  senderName;
     private String                  receiverName;
 
-    public TransactionDataModel(long userId, long transactionId, String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName) {
-        this.userId = userId;
-        this.transactionId = transactionId;
+    public TransactionPresentationModel(String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName) {
         this.transactionName = transactionName;
         this.kind = kind;
         this.isPeriodical = isPeriodical;
@@ -61,10 +57,6 @@ public class TransactionDataModel {
         this.receiverName = receiverName;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
     public String getTransactionName() {
         return transactionName;
     }
@@ -99,9 +91,5 @@ public class TransactionDataModel {
 
     public String getReceiverName() {
         return receiverName;
-    }
-
-    public long getTransactionId() {
-        return transactionId;
     }
 }
