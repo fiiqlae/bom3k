@@ -1,4 +1,23 @@
 App.java
  App
+data/models/TransactionDataModel.java
+ data.models.TransactionDataModel
+data/models/UserAccountDataModel.java
+ data.models.UserAccountDataModel
+data/database/CredentialsManagerImpl.java
+ data.database.CredentialsManagerImpl
+ data.database.CredentialsManagerImpl$UserExistsException
+data/database/CredentialsManager.java
+ data.database.CredentialsManager
+data/database/Database.java
+ data.database.Database
+commonDefenitions/TransactionKind.java
+ commonDefenitions.TransactionKind
+commonDefenitions/DatabaseConfig.java
+ commonDefenitions.DatabaseConfig
 Main.java
  Main
+di/modules/ApplicationModule.java
+ di.modules.ApplicationModule
+data/database/DatabaseImpl.java
+ data.database.DatabaseImpl

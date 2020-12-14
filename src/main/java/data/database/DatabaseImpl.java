@@ -5,6 +5,7 @@ import commonDefenitions.TransactionKind;
 import data.models.TransactionDataModel;
 import data.models.UserAccountDataModel;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -13,6 +14,19 @@ import java.util.logging.Logger;
 public class DatabaseImpl implements Database {
 
     private Connection activeConnection;
+
+    public DatabaseImpl() {
+        try {
+            establishConnection();
+            PreparedStatement transactions = activeConnection.prepareStatement(DatabaseConfig.queryCreateTransactions);
+            PreparedStatement users = activeConnection.prepareStatement(DatabaseConfig.queryCreateUsers);
+            transactions.execute();
+            users.execute();
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(Database.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
 
     @Override
     public void establishConnection() {
