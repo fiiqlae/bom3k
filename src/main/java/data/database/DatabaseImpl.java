@@ -1,12 +1,18 @@
 package data.database;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import commonDefenitions.DatabaseConfig;
-import commonDefenitions.TransactionKind;
+import data.database.stores.AccountStore;
+import data.database.stores.TransactionsStore;
 import data.models.TransactionDataModel;
 import data.models.UserAccountDataModel;
+import di.modules.DataModule;
 
-import javax.xml.crypto.Data;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,18 +20,27 @@ import java.util.logging.Logger;
 public class DatabaseImpl implements Database {
 
     private Connection activeConnection;
+    private AccountStore accountStore;
+    private TransactionsStore transactionsStore;
 
     public DatabaseImpl() {
         try {
             establishConnection();
-            PreparedStatement transactions = activeConnection.prepareStatement(DatabaseConfig.queryCreateTransactions);
-            PreparedStatement users = activeConnection.prepareStatement(DatabaseConfig.queryCreateUsers);
-            transactions.execute();
-            users.execute();
+            initializeTables();
+            Injector injector = Guice.createInjector(new DataModule());
+            accountStore = injector.getInstance(AccountStore.class);
+            transactionsStore = injector.getInstance(TransactionsStore.class);
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(Database.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    }
+
+    private void initializeTables() throws SQLException {
+        PreparedStatement transactions = activeConnection.prepareStatement(DatabaseConfig.queryCreateTransactions);
+        PreparedStatement users = activeConnection.prepareStatement(DatabaseConfig.queryCreateUsers);
+        transactions.execute();
+        users.execute();
     }
 
     @Override
@@ -51,188 +66,42 @@ public class DatabaseImpl implements Database {
     }
 
     @Override
-    public ArrayList<TransactionDataModel> selectUserTransactions(long userId) {
-        ArrayList<TransactionDataModel> queryResult = new ArrayList<>();
-        try {
-            PreparedStatement statement =
-                    activeConnection.prepareStatement(DatabaseConfig.querySelectTransactionsForUser);
-            statement.setLong(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                queryResult.add(toTransactionDataModel(resultSet));
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return queryResult;
-    }
-
-    @Override
-    public void alterTransaction(TransactionDataModel targetTransaction) {
-        try {
-            PreparedStatement statement = toUpdateTransactionQuery(targetTransaction);
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public void deleteTransaction(TransactionDataModel transaction) {
-        try {
-            PreparedStatement statement = activeConnection.prepareStatement(DatabaseConfig.queryDeleteTransaction);
-            statement.setLong(1, transaction.getTransactionId());
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public void createTransaction(TransactionDataModel transactionDataModel) {
-        try {
-            PreparedStatement statement = toInsertTransactionQuery(transactionDataModel);
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
     public void createUser(UserAccountDataModel userAccount) {
-        try {
-            PreparedStatement statement = toInsertUserQuery(userAccount);
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+        accountStore.createUser(userAccount);
     }
 
     @Override
     public void alterUser(UserAccountDataModel targetUserAccount) {
-        try {
-            PreparedStatement statement = toUpdateUserQuery(targetUserAccount);
-            statement.executeUpdate();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+        accountStore.alterUser(targetUserAccount);
     }
 
     @Override
     public void deleteUser(UserAccountDataModel userAccount) {
-        try {
-            PreparedStatement statement = activeConnection.prepareStatement(DatabaseConfig.queryDeleteUser);
-            statement.setLong(1, userAccount.getId());
-            statement.execute();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+        accountStore.deleteUser(userAccount);
     }
 
     @Override
     public UserAccountDataModel selectUserByPasswordHash(String hash) {
-        UserAccountDataModel queryResult;
-        try {
-            PreparedStatement statement =
-                    activeConnection.prepareStatement(DatabaseConfig.querySelectUserByHash);
-            statement.setString(1, hash);
-            ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()) {
-                return toUserAccountDataModel(resultSet);
-            }
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return null;
+        return accountStore.selectUserByPasswordHash(hash);
     }
 
-    private TransactionDataModel toTransactionDataModel(ResultSet resultSet) throws SQLException {
-        return (new TransactionDataModel(
-                resultSet.getLong(11),
-                resultSet.getLong(1),
-                resultSet.getString(2),
-                (resultSet.getString(3).equals("spending"))? TransactionKind.SPENDING : TransactionKind.INCOME,
-                resultSet.getBoolean(4),
-                resultSet.getString(5),
-                resultSet.getString(6),
-                resultSet.getString(7),
-                resultSet.getString(8),
-                resultSet.getString(9),
-                resultSet.getString(10)));
+    @Override
+    public ArrayList<TransactionDataModel> selectUserTransactions(long userId) {
+        return transactionsStore.selectUserTransactions(userId);
     }
 
-    private UserAccountDataModel toUserAccountDataModel(ResultSet resultSet) throws SQLException {
-        return new UserAccountDataModel(
-                resultSet.getString(1),
-                resultSet.getString(2),
-                resultSet.getLong(3),
-                resultSet.getString(4),
-                resultSet.getString(5),
-                resultSet.getString(6)
-        );
+    @Override
+    public void alterTransaction(TransactionDataModel targetTransaction) {
+        transactionsStore.alterTransaction(targetTransaction);
     }
 
-    private PreparedStatement toUpdateTransactionQuery(TransactionDataModel transactionDataModel) throws SQLException {
-        PreparedStatement s = activeConnection.prepareStatement(DatabaseConfig.queryAlterTransaction);
-        s.setLong(1, transactionDataModel.getTransactionId());
-        s.setString(2, transactionDataModel.getTransactionName());
-        s.setString(3, (transactionDataModel.getKind() == TransactionKind.SPENDING)? "spending" : "income");
-        s.setBoolean(4, transactionDataModel.isPeriodical());
-        s.setString(5, transactionDataModel.getTimestamp());
-        s.setString(6, transactionDataModel.getDueDate());
-        s.setString(7, transactionDataModel.getCategory());
-        s.setString(8, transactionDataModel.getComment());
-        s.setString(9, transactionDataModel.getSenderName());
-        s.setString(10, transactionDataModel.getReceiverName());
-        s.setLong(11, transactionDataModel.getUserId());
-        s.setLong(12, transactionDataModel.getTransactionId());
-        return s;
+    @Override
+    public void deleteTransaction(TransactionDataModel transaction) {
+        transactionsStore.deleteTransaction(transaction);
     }
 
-    private PreparedStatement toInsertTransactionQuery(TransactionDataModel transactionDataModel) throws SQLException {
-        PreparedStatement s = activeConnection.prepareStatement(DatabaseConfig.queryInsertTransaction);
-        s.setLong(1, transactionDataModel.getTransactionId());
-        s.setString(2, transactionDataModel.getTransactionName());
-        s.setString(3, (transactionDataModel.getKind() == TransactionKind.SPENDING)? "spending" : "income");
-        s.setBoolean(4, transactionDataModel.isPeriodical());
-        s.setString(5, transactionDataModel.getTimestamp());
-        s.setString(6, transactionDataModel.getDueDate());
-        s.setString(7, transactionDataModel.getCategory());
-        s.setString(8, transactionDataModel.getComment());
-        s.setString(9, transactionDataModel.getSenderName());
-        s.setString(10, transactionDataModel.getReceiverName());
-        s.setLong(11, transactionDataModel.getUserId());
-        return s;
-    }
-
-    private PreparedStatement toInsertUserQuery(UserAccountDataModel userAccountDataModel) throws SQLException {
-        PreparedStatement s = activeConnection.prepareStatement(DatabaseConfig.queryInsertUser);
-        s.setString(1, userAccountDataModel.getUsername());
-        s.setString(2, userAccountDataModel.getPasswordHash());
-        s.setLong(3, userAccountDataModel.getId());
-        s.setString(4, userAccountDataModel.getCountry());
-        s.setString(5, userAccountDataModel.getCity());
-        s.setString(6, userAccountDataModel.getCurrency());
-        return s;
-    }
-
-    private PreparedStatement toUpdateUserQuery(UserAccountDataModel userAccountDataModel) throws SQLException {
-        PreparedStatement s = activeConnection.prepareStatement(DatabaseConfig.queryAlterUser);
-        s.setString(1, userAccountDataModel.getUsername());
-        s.setString(2, userAccountDataModel.getPasswordHash());
-        s.setLong(3, userAccountDataModel.getId());
-        s.setString(4, userAccountDataModel.getCountry());
-        s.setString(5, userAccountDataModel.getCity());
-        s.setString(6, userAccountDataModel.getCurrency());
-        s.setLong(7, userAccountDataModel.getId());
-        return s;
+    @Override
+    public void createTransaction(TransactionDataModel transactionDataModel) {
+        transactionsStore.createTransaction(transactionDataModel);
     }
 }

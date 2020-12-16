@@ -1,21 +1,9 @@
 package data.database;
 
-import data.models.TransactionDataModel;
-import data.models.UserAccountDataModel;
+import data.database.stores.AccountStore;
+import data.database.stores.TransactionsStore;
 
-import java.util.ArrayList;
-
-public interface Database {
+public interface Database extends AccountStore, TransactionsStore {
     void establishConnection();
     void closeConnection();
-
-    ArrayList<TransactionDataModel> selectUserTransactions(long userId);
-    void alterTransaction(TransactionDataModel targetTransaction);
-    void deleteTransaction(TransactionDataModel transaction);
-    void createTransaction(TransactionDataModel transactionDataModel);
-
-    void createUser(UserAccountDataModel userAccount);
-    void alterUser(UserAccountDataModel targetUserAccount);
-    void deleteUser(UserAccountDataModel userAccount);
-    UserAccountDataModel selectUserByPasswordHash(String hash);
 }
