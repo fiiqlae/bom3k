@@ -3,7 +3,6 @@ package domain.implementations;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import data.database.CredentialsManager;
-import data.database.CredentialsManagerImpl;
 import data.exceptions.UserExistsException;
 import data.models.UserAccountDataModel;
 import di.modules.DataModule;

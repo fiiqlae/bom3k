@@ -38,12 +38,12 @@ public class CredentialsManagerImpl implements CredentialsManager {
     }
 
     @Override
-    public boolean registerUser(String userName, String password) {
+    public boolean registerUser(String userName, String password) throws UserExistsException {
         try {
             // yeeeeeeah, big brain time
             logIn(userName, password);
             throw new UserExistsException("user is already registered");
-        } catch (LoginException | UserExistsException e) {
+        } catch (LoginException e) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             Instant instant = timestamp.toInstant();
             long id = instant.toEpochMilli();

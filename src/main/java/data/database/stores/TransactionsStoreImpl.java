@@ -5,6 +5,7 @@ import data.database.Database;
 import data.database.Mappings;
 import data.models.TransactionDataModel;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

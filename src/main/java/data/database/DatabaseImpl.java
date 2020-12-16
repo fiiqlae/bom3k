@@ -4,13 +4,14 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import commonDefenitions.DatabaseConfig;
 import data.database.stores.AccountStore;
+import data.database.stores.AccountStoreImpl;
 import data.database.stores.TransactionsStore;
+import data.database.stores.TransactionsStoreImpl;
 import data.models.TransactionDataModel;
 import data.models.UserAccountDataModel;
 import di.modules.DataModule;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,50 +20,30 @@ import java.util.logging.Logger;
 
 public class DatabaseImpl implements Database {
 
-    private Connection activeConnection;
     private AccountStore accountStore;
     private TransactionsStore transactionsStore;
+    private Connection activeConnection;
 
     public DatabaseImpl() {
         try {
-            establishConnection();
-            initializeTables();
             Injector injector = Guice.createInjector(new DataModule());
-            accountStore = injector.getInstance(AccountStore.class);
-            transactionsStore = injector.getInstance(TransactionsStore.class);
+            ConnectionManager connectionManager = injector.getInstance(ConnectionManager.class);
+            activeConnection = connectionManager.getActiveConnection();
+            accountStore = new AccountStoreImpl(activeConnection);
+            transactionsStore = new TransactionsStoreImpl(activeConnection);
+            initializeTables();
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(Database.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-    private void initializeTables() throws SQLException {
+    @Override
+    public void initializeTables() throws SQLException {
         PreparedStatement transactions = activeConnection.prepareStatement(DatabaseConfig.queryCreateTransactions);
         PreparedStatement users = activeConnection.prepareStatement(DatabaseConfig.queryCreateUsers);
         transactions.execute();
         users.execute();
-    }
-
-    @Override
-    public void establishConnection() {
-        try {
-            activeConnection = DriverManager.getConnection(DatabaseConfig.dbUrl,
-                    DatabaseConfig.dbUser,
-                    DatabaseConfig.dbPassword);
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public void closeConnection() {
-        try {
-            activeConnection.close();
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(Database.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import data.database.Database;
 import data.database.Mappings;
 import data.models.UserAccountDataModel;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +22,7 @@ public class AccountStoreImpl implements AccountStore {
         this.activeConnection = activeConnection;
         this.mappings = new Mappings(activeConnection);
     }
+
     @Override
     public void createUser(UserAccountDataModel userAccount) {
         try {
