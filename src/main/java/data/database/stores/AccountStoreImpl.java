@@ -74,4 +74,22 @@ public class AccountStoreImpl implements AccountStore {
         }
         return null;
     }
+
+    @Override
+    public UserAccountDataModel selectUserById(long userId) {
+        UserAccountDataModel queryResult;
+        try {
+            PreparedStatement statement =
+                    activeConnection.prepareStatement(DatabaseConfig.querySelectUserById);
+            statement.setLong(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                return mappings.toUserAccountDataModel(resultSet);
+            }
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(Database.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
 }

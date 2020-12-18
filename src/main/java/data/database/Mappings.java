@@ -41,8 +41,9 @@ public class Mappings {
                 resultSet.getLong(3),
                 resultSet.getString(4),
                 resultSet.getString(5),
-                resultSet.getString(6)
-        );
+                resultSet.getString(6),
+                resultSet.getFloat(7),
+                resultSet.getFloat(8));
     }
 
     public PreparedStatement toUpdateTransactionQuery(TransactionDataModel transactionDataModel) throws SQLException {
@@ -88,6 +89,8 @@ public class Mappings {
         s.setString(4, userAccountDataModel.getCountry());
         s.setString(5, userAccountDataModel.getCity());
         s.setString(6, userAccountDataModel.getCurrency());
+        s.setFloat(7, userAccountDataModel.getAllowancePercentage());
+        s.setFloat(8, userAccountDataModel.getSavingsPercentage());
         return s;
     }
 
@@ -99,7 +102,9 @@ public class Mappings {
         s.setString(4, userAccountDataModel.getCountry());
         s.setString(5, userAccountDataModel.getCity());
         s.setString(6, userAccountDataModel.getCurrency());
-        s.setLong(7, userAccountDataModel.getId());
+        s.setFloat(7, userAccountDataModel.getAllowancePercentage());
+        s.setFloat(8, userAccountDataModel.getSavingsPercentage());
+        s.setLong(9, userAccountDataModel.getId());
         return s;
     }
 }

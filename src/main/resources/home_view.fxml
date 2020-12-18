@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
-            fx:controller="presentation.views.HomeView"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="home_tab">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" fx:controller="presentation.views.HomeView" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="home_tab">
     <children>
         <ListView fx:id="scheduled_payments" layoutX="14.0" layoutY="14.0"
                   prefHeight="186.0"
@@ -30,12 +25,16 @@
                    AnchorPane.leftAnchor="14.0"
                    AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="293.0">
             <columns>
-                <TableColumn prefWidth="75.0" text="Amount" fx:id="column_amount"/>
-                <TableColumn prefWidth="150.0" text="Sender" fx:id="column_sender"/>
-                <TableColumn prefWidth="150.0" text="Receiver" fx:id="column_receiver"/>
-                <TableColumn prefWidth="75.0" text="Date" fx:id="column_date"/>
-                <TableColumn prefWidth="122.0" text="Paid with"
-                             fx:id="column_payment_method"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="amount"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="transactionName"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="kind"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="isPeriodical"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="dueDate"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="category"/>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="comment"/>
+                <TableColumn prefWidth="150.0" text="Sender" fx:id="senderName"/>
+                <TableColumn prefWidth="150.0" text="Receiver" fx:id="receiverName"/>
+                <TableColumn prefWidth="75.0" text="Date" fx:id="timestamp"/>
             </columns>
         </TableView>
         <Button fx:id="add_transaction" layoutX="272.0" layoutY="246.0"

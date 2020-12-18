@@ -1,13 +1,12 @@
 package domain.implementations;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
-import commonDefenitions.TransactionKind;
 import data.database.CredentialsManager;
 import data.database.Database;
 import data.exceptions.UserIsNotLoggedInException;
 import data.models.TransactionDataModel;
-import di.modules.DataModule;
 import domain.interfaces.AlterTransactionUseCase;
 import presentation.models.TransactionPresentationModel;
 
@@ -15,14 +14,11 @@ import java.util.ArrayList;
 
 public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
 
+    @Inject
     CredentialsManager credentialsManager;
-    Database database;
 
-    public AlterTransactionUseCaseImpl() {
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-        database = injector.getInstance(Database.class);
-    }
+    @Inject
+    Database database;
 
     private TransactionDataModel getTargetTransaction(int listPosition) throws UserIsNotLoggedInException {
         long userId = credentialsManager.getLastLoggedInUser().getId();

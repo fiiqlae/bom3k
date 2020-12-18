@@ -35,7 +35,7 @@ public class DatabaseConfig {
                    "comment," +
                    "senderName," +
                    "receiverName," +
-                   "userId" +
+                   "userId," +
                    "amount" +
                    ") values (" +
                    "?,?,?,?,?,?,?,?,?,?,?,?" +
@@ -47,9 +47,11 @@ public class DatabaseConfig {
                    "id," +
                    "country," +
                    "city," +
-                   "currency" +
+                   "currency," +
+                   "allowancePercentage," +
+                   "savingsPercentage" +
                    ") values (" +
-                   "?,?,?,?,?,?" +
+                   "?,?,?,?,?,?,?,?" +
                    ");";
    public static String queryAlterUser =
            "UPDATE users WHERE " +
@@ -59,17 +61,22 @@ public class DatabaseConfig {
                    "country = ?" +
                    "city = ?" +
                    "currency = ?" +
+                   "allowancePercentage = ?" +
+                   "savingsPercentage = ?" +
                    "WHERE id = ?" +
                    ";";
    public static String queryDeleteUser = "DELETE FROM users WHERE id = ?;";
    public static String querySelectUserByHash = "SELECT * FROM users WHERE passwordHash = ?;";
+   public static String querySelectUserById = "SELECT * FROM users WHERE id = ?;";
    public static String queryCreateUsers = "CREATE TABLE IF NOT EXISTS users (" +
            "username varchar(1000) not null," +
            "passwordHash varchar(1000) not null," +
            "id bigint primary key," +
            "country varchar(1000) not null," +
            "city varchar(1000) not null," +
-           "currency varchar(10) not null" +
+           "currency varchar(10) not null," +
+           "allowancePercentage real not null," +
+           "savingsPercentage real not null" +
            ");";
    public static String queryCreateTransactions = "CREATE TABLE IF NOT EXISTS transactions (" +
            "transactionId bigint primary key," +
@@ -85,4 +92,10 @@ public class DatabaseConfig {
            "userId bigint not null," +
            "amount real not null" +
            ");";
+   public static String queryCreateLoginHistory = "CREATE TABLE IF NOT EXISTS loginHistory (" +
+           "logInId bigint primary key, " +
+           "userId bigint not null);";
+   public static String queryLogIn = "INSERT INTO loginHistory(logInId, userId) values (?,?);";
+   public static String queryLogOut = "DELETE FROM loginHistory;";
+   public static String querySelectLoggedInUser= "SELECT * FROM loginHistory;";
 }

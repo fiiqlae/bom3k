@@ -7,4 +7,5 @@ public interface AccountStore {
     void alterUser(UserAccountDataModel targetUserAccount);
     void deleteUser(UserAccountDataModel userAccount);
     UserAccountDataModel selectUserByPasswordHash(String hash);
+    UserAccountDataModel selectUserById(long userId);
 }

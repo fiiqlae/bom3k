@@ -18,6 +18,7 @@ public class ConnectionManagerImpl implements ConnectionManager{
             activeConnection = DriverManager.getConnection(DatabaseConfig.dbUrl,
                     DatabaseConfig.dbUser,
                     DatabaseConfig.dbPassword);
+            //activeConnection.prepareStatement("drop table transactions; drop table users; drop table loginHistory;").execute();
         } catch (SQLException ex) {
             Logger lgr = Logger.getLogger(Database.class.getName());
             lgr.log(Level.SEVERE, ex.getMessage(), ex);

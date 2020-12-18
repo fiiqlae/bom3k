@@ -1,12 +1,10 @@
 package domain.implementations;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 import data.database.CredentialsManager;
 import data.database.Database;
 import data.exceptions.UserIsNotLoggedInException;
 import data.models.UserAccountDataModel;
-import di.modules.DataModule;
 import domain.interfaces.ChangeUserPreferencesUseCase;
 
 import java.util.logging.Level;
@@ -14,14 +12,11 @@ import java.util.logging.Logger;
 
 public class ChangeUserPreferencesUseCaseImpl implements ChangeUserPreferencesUseCase {
 
+    @Inject
     CredentialsManager credentialsManager;
-    Database database;
 
-    public ChangeUserPreferencesUseCaseImpl() {
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-        database = injector.getInstance(Database.class);
-    }
+    @Inject
+    Database database;
 
     @Override
     public void setUserCountry(String country) {
