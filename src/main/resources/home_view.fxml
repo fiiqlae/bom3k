@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+            fx:controller="presentation.views.HomeView"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="home_tab">
+    <children>
+        <ListView fx:id="scheduled_payments" layoutX="14.0" layoutY="14.0"
+                  prefHeight="186.0"
+                  prefWidth="309.0" AnchorPane.bottomAnchor="570.0"
+                  AnchorPane.leftAnchor="14.0"
+                  AnchorPane.rightAnchor="277.0" AnchorPane.topAnchor="14.0"/>
+        <Label fx:id="allowance_remaining" layoutX="335.0" layoutY="14.0"
+               prefHeight="183.0"
+               prefWidth="254.0" text="Label" AnchorPane.bottomAnchor="570.0"
+               AnchorPane.leftAnchor="335.0" AnchorPane.rightAnchor="14.0"
+               AnchorPane.topAnchor="14.0"/>
+        <TextField fx:id="searchbar" layoutX="14.0" layoutY="208.0" prefHeight="25.0"
+                   prefWidth="577.0" AnchorPane.bottomAnchor="534.0"
+                   AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
+                   AnchorPane.topAnchor="208.0"/>
+        <TableView fx:id="recent_payments" layoutX="14.0" layoutY="293.0"
+                   prefHeight="460.0"
+                   prefWidth="572.0" AnchorPane.bottomAnchor="14.0"
+                   AnchorPane.leftAnchor="14.0"
+                   AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="293.0">
+            <columns>
+                <TableColumn prefWidth="75.0" text="Amount" fx:id="column_amount"/>
+                <TableColumn prefWidth="150.0" text="Sender" fx:id="column_sender"/>
+                <TableColumn prefWidth="150.0" text="Receiver" fx:id="column_receiver"/>
+                <TableColumn prefWidth="75.0" text="Date" fx:id="column_date"/>
+                <TableColumn prefWidth="122.0" text="Paid with"
+                             fx:id="column_payment_method"/>
+            </columns>
+        </TableView>
+        <Button fx:id="add_transaction" layoutX="272.0" layoutY="246.0"
+                mnemonicParsing="false"
+                prefHeight="36.0" prefWidth="572.0" text="Add a transaction"
+                AnchorPane.bottomAnchor="485.0" AnchorPane.leftAnchor="14.0"
+                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="246.0"/>
+    </children>
+</AnchorPane>

@@ -30,7 +30,8 @@ public class Mappings {
                 resultSet.getString(7),
                 resultSet.getString(8),
                 resultSet.getString(9),
-                resultSet.getString(10)));
+                resultSet.getString(10),
+                resultSet.getFloat(12)));
     }
 
     public UserAccountDataModel toUserAccountDataModel(ResultSet resultSet) throws SQLException {
@@ -57,7 +58,8 @@ public class Mappings {
         s.setString(9, transactionDataModel.getSenderName());
         s.setString(10, transactionDataModel.getReceiverName());
         s.setLong(11, transactionDataModel.getUserId());
-        s.setLong(12, transactionDataModel.getTransactionId());
+        s.setFloat(12, transactionDataModel.getAmount());
+        s.setLong(13, transactionDataModel.getTransactionId());
         return s;
     }
 
@@ -74,6 +76,7 @@ public class Mappings {
         s.setString(9, transactionDataModel.getSenderName());
         s.setString(10, transactionDataModel.getReceiverName());
         s.setLong(11, transactionDataModel.getUserId());
+        s.setFloat(12, transactionDataModel.getAmount());
         return s;
     }
 

@@ -41,6 +41,7 @@ public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
         targetDataModel.setComment(target.getComment());
         targetDataModel.setPeriodical(target.isPeriodical());
         targetDataModel.setKind(target.getKind());
+        targetDataModel.setAmount(target.getAmount());
         database.alterTransaction(targetDataModel);
     }
 }

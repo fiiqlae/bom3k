@@ -6,7 +6,7 @@ import domain.interfaces.RegisterUseCase;
 public class Main{
 
     public static void main(String[] args) {
-        //App.main(args);
+        App.main(args);
         Injector injector = Guice.createInjector(new DomainModule());
         RegisterUseCase r = injector.getInstance(RegisterUseCase.class);
         try {

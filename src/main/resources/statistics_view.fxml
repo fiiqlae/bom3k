@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.BarChart?>
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+            fx:controller="presentation.views.StatisticsView"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="statistics_tab">
+    <children>
+        <LineChart fx:id="income_over_time" layoutX="14.0" layoutY="14.0" prefHeight="262.0"
+                   prefWidth="572.0" AnchorPane.bottomAnchor="491.0"
+                   AnchorPane.leftAnchor="14.0"
+                   AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </LineChart>
+        <BarChart fx:id="income_spending_ovet_time" layoutX="14.0" layoutY="295.0"
+                  prefHeight="406.0" prefWidth="565.0" AnchorPane.bottomAnchor="66.0"
+                  AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
+                  AnchorPane.topAnchor="295.0">
+            <xAxis>
+                <CategoryAxis side="BOTTOM"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </BarChart>
+        <Button fx:id="export" layoutX="14.0" layoutY="701.0" mnemonicParsing="false"
+                prefHeight="25.0" prefWidth="574.0" text="Export to Excel"
+                AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="14.0"
+                AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="701.0"/>
+    </children>
+</AnchorPane>

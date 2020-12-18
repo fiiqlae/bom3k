@@ -19,6 +19,7 @@ public class DatabaseConfig {
            "senderName = ? " +
            "receiverName = ? " +
            "userId = ?" +
+           "amount = ?" +
            "WHERE transactionId = ?;";
 
    public static String queryDeleteTransaction = "DELETE FROM transactions WHERE transactionId = ?;";
@@ -35,8 +36,9 @@ public class DatabaseConfig {
                    "senderName," +
                    "receiverName," +
                    "userId" +
+                   "amount" +
                    ") values (" +
-                   "?,?,?,?,?,?,?,?,?,?,?" +
+                   "?,?,?,?,?,?,?,?,?,?,?,?" +
                    ");";
    public static String queryInsertUser =
            "INSERT INTO users(" +
@@ -80,6 +82,7 @@ public class DatabaseConfig {
            "\"comment\" varchar(1000) not null," +
            "senderName varchar(1000) not null," +
            "receiverName varchar(1000) not null," +
-           "userId bigint not null" +
+           "userId bigint not null," +
+           "amount real not null" +
            ");";
 }

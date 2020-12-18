@@ -12,7 +12,6 @@ import presentation.models.TransactionPresentationModel;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Locale;
 import java.util.Random;
 
 public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
@@ -43,8 +42,8 @@ public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
                 transaction.getCategory(),
                 transaction.getCategory(),
                 transaction.getSenderName(),
-                transaction.getReceiverName()
-        );
+                transaction.getReceiverName(),
+                transaction.getAmount());
         database.createTransaction(dataModel);
     }
 }
