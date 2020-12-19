@@ -7,9 +7,12 @@ import data.exceptions.UserIsNotLoggedInException;
 import data.models.TransactionDataModel;
 import domain.interfaces.AddTransactionUseCase;
 import presentation.models.TransactionPresentationModel;
+import presentation.models.TransactionSubmissionPresentationModel;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Random;
 
 public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
@@ -21,7 +24,7 @@ public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
     Database database;
 
     @Override
-    public void addTransaction(TransactionPresentationModel transaction) throws UserIsNotLoggedInException {
+    public void addTransaction(TransactionSubmissionPresentationModel transaction) throws UserIsNotLoggedInException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Instant instant = timestamp.toInstant();
         Random random = new Random();
@@ -29,15 +32,15 @@ public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
         TransactionDataModel dataModel = new TransactionDataModel(
                 credentialsManager.getLastLoggedInUser().getId(),
                 id,
-                transaction.getTransactionName(),
+                transaction.getName(),
                 transaction.getKind(),
                 transaction.isPeriodical(),
                 String.valueOf(instant.toEpochMilli()),
-                transaction.getDueDate(),
-                transaction.getCategory(),
-                transaction.getCategory(),
-                transaction.getSenderName(),
-                transaction.getReceiverName(),
+                String.valueOf(transaction.getDueDate().atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli()),
+                "generic category",
+                transaction.getComment(),
+                transaction.getSender(),
+                transaction.getReceiver(),
                 transaction.getAmount());
         database.createTransaction(dataModel);
     }

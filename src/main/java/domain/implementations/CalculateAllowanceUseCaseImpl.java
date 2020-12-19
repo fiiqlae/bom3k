@@ -23,14 +23,14 @@ public class CalculateAllowanceUseCaseImpl implements CalculateAllowanceUseCase 
     Database database;
 
     @Override
-    public float getAllowance() throws UserIsNotLoggedInException {
+    public String getAllowance() throws UserIsNotLoggedInException {
         long userId = credentialsManager.getLastLoggedInUser().getId();
         ArrayList<TransactionDataModel> recentTransactions = database.selectUserTransactions(userId);
         Stream<TransactionDataModel> thisMonthTransactions = recentTransactions.stream().filter(t ->
                 LocalDateTime.ofInstant(
                         Instant.ofEpochMilli(Long.parseLong(t.getTimestamp())), TimeZone.getDefault().toZoneId()
                 ).getMonth() == LocalDateTime.now().getMonth());
-        return thisMonthTransactions.map(t -> t.getKind() == TransactionKind.SPENDING? t.getAmount()*-1 : t.getAmount())
-                .reduce(0.0f, Float::sum)*credentialsManager.getLastLoggedInUser().getAllowancePercentage();
+        return String.format("%.2f", thisMonthTransactions.map(t -> t.getKind() == TransactionKind.SPENDING? t.getAmount()*-1 : t.getAmount())
+                .reduce(0.0f, Float::sum)*credentialsManager.getLastLoggedInUser().getAllowancePercentage()/100);
     }
 }

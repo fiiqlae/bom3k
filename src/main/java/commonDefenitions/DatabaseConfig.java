@@ -8,18 +8,18 @@ public class DatabaseConfig {
    public static String querySelectTransactionsForUser = "SELECT * FROM transactions WHERE userId = ?;";
    public static String queryAlterTransaction = "UPDATE transactions " +
            "SET " +
-           "transactionId = ? " +
-           "transactionName = ? " +
-           "kind = ? " +
-           "isPeriodical = ? " +
-           "timestamp = ? " +
-           "dueDate = ? " +
-           "category = ? " +
-           "comment = ? " +
-           "senderName = ? " +
-           "receiverName = ? " +
-           "userId = ?" +
-           "amount = ?" +
+           "transactionId = ? ," +
+           "transactionName = ? ," +
+           "kind = ? ," +
+           "isPeriodical = ? ," +
+           "timestamp = ? ," +
+           "dueDate = ? ," +
+           "category = ? ," +
+           "comment = ? ," +
+           "senderName = ? ," +
+           "receiverName = ? ," +
+           "userId = ? ," +
+           "amount = ? " +
            "WHERE transactionId = ?;";
 
    public static String queryDeleteTransaction = "DELETE FROM transactions WHERE transactionId = ?;";
@@ -54,15 +54,15 @@ public class DatabaseConfig {
                    "?,?,?,?,?,?,?,?" +
                    ");";
    public static String queryAlterUser =
-           "UPDATE users WHERE " +
-                   "username = ?" +
-                   "passwordHash = ?" +
-                   "id = ?" +
-                   "country = ?" +
-                   "city = ?" +
-                   "currency = ?" +
-                   "allowancePercentage = ?" +
-                   "savingsPercentage = ?" +
+           "UPDATE users SET " +
+                   "username = ? ," +
+                   "passwordHash = ? ," +
+                   "id = ? ," +
+                   "country = ? ," +
+                   "city = ? ," +
+                   "currency = ? ," +
+                   "allowancePercentage = ? ," +
+                   "savingsPercentage = ? " +
                    "WHERE id = ?" +
                    ";";
    public static String queryDeleteUser = "DELETE FROM users WHERE id = ?;";

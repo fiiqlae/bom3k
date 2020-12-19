@@ -23,7 +23,7 @@ public class Main{
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             Instant instant = timestamp.toInstant();
             l.logIn("pepman2", "peppwd5");
-            a.addTransaction(new TransactionPresentationModel("123", TransactionKind.SPENDING, true, String.valueOf(instant.toEpochMilli()), String.valueOf(instant.toEpochMilli()), "asd", "asd", "asd", "asd", 123.123f));
+            //a.addTransaction(new TransactionPresentationModel("123", TransactionKind.SPENDING, true, String.valueOf(instant.toEpochMilli()), String.valueOf(instant.toEpochMilli()+14*24*60*60*1000), "asd", "asd", "asd", "asd", 123.123f));
 
         } catch (Exception e) {
             e.printStackTrace();

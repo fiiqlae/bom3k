@@ -17,12 +17,10 @@ public class LoginStoreImpl implements LoginStore{
 
     private final Connection activeConnection;
     private final AccountStore accountStore;
-    private final Mappings mappings;
 
     public LoginStoreImpl(Connection activeConnection){
         this.activeConnection = activeConnection;
         this.accountStore = new AccountStoreImpl(activeConnection);
-        this.mappings = new Mappings(activeConnection);
     }
 
     @Override

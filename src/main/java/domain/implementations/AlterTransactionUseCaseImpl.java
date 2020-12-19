@@ -9,7 +9,9 @@ import data.exceptions.UserIsNotLoggedInException;
 import data.models.TransactionDataModel;
 import domain.interfaces.AlterTransactionUseCase;
 import presentation.models.TransactionPresentationModel;
+import presentation.models.TransactionSubmissionPresentationModel;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
@@ -27,13 +29,15 @@ public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
     }
 
     @Override
-    public void alterTransaction(TransactionPresentationModel target, int listPosition) throws UserIsNotLoggedInException {
+    public void alterTransaction(TransactionSubmissionPresentationModel target, int listPosition) throws UserIsNotLoggedInException {
         TransactionDataModel targetDataModel = getTargetTransaction(listPosition);
-        targetDataModel.setTransactionName(target.getTransactionName());
-        targetDataModel.setReceiverName(target.getReceiverName());
-        targetDataModel.setSenderName(target.getSenderName());
-        targetDataModel.setDueDate(target.getDueDate());
-        targetDataModel.setCategory(target.getCategory());
+        targetDataModel.setTransactionName(target.getName());
+        targetDataModel.setReceiverName(target.getReceiver());
+        targetDataModel.setSenderName(target.getSender());
+        targetDataModel.setDueDate(
+                String.valueOf(target.getDueDate().atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli())
+        );
+        targetDataModel.setCategory("generic category");
         targetDataModel.setComment(target.getComment());
         targetDataModel.setPeriodical(target.isPeriodical());
         targetDataModel.setKind(target.getKind());
