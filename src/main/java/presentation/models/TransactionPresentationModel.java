@@ -12,8 +12,9 @@ public class TransactionPresentationModel {
     private String                  comment;
     private String                  senderName;
     private String                  receiverName;
+    private float                   amount;
 
-    public TransactionPresentationModel(String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName) {
+    public TransactionPresentationModel(String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName, float amount) {
         this.transactionName = transactionName;
         this.kind = kind;
         this.isPeriodical = isPeriodical;
@@ -23,6 +24,11 @@ public class TransactionPresentationModel {
         this.comment = comment;
         this.senderName = senderName;
         this.receiverName = receiverName;
+        this.amount = amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
     public void setTransactionName(String transactionName) {
@@ -55,6 +61,10 @@ public class TransactionPresentationModel {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public float getAmount() {
+        return amount;
     }
 
     public String getTransactionName() {

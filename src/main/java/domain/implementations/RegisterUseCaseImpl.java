@@ -1,34 +1,39 @@
 package domain.implementations;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 import data.database.CredentialsManager;
 import data.exceptions.UserExistsException;
 import data.models.UserAccountDataModel;
-import di.modules.DataModule;
 import domain.interfaces.RegisterUseCase;
 import presentation.models.UserAccountPresentationModel;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 
 public class RegisterUseCaseImpl implements RegisterUseCase {
 
-    private final CredentialsManager credentialsManager;
-
-    public RegisterUseCaseImpl(){
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-    }
+    @Inject
+    private CredentialsManager credentialsManager;
 
     @Override
     public boolean register(String username, String password) throws UserExistsException {
-        return credentialsManager.registerUser(username, password);
+        try {
+            return credentialsManager.registerUser(username, password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public UserAccountPresentationModel registerAndLogIn(String username, String password) throws UserExistsException, LoginException {
         if(register(username, password)) {
-            UserAccountDataModel dataModel = credentialsManager.logIn(username, password);
+            UserAccountDataModel dataModel = null;
+            try {
+                dataModel = credentialsManager.logIn(username, password);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             return new UserAccountPresentationModel(dataModel.getUsername(),
                     dataModel.getCountry(),
                     dataModel.getCity(),

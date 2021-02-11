@@ -1,18 +1,19 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import di.modules.DomainModule;
+import commonDefenitions.TransactionKind;
+import di.modules.ApplicationModule;
+import domain.interfaces.AddTransactionUseCase;
+import domain.interfaces.LogInUseCase;
 import domain.interfaces.RegisterUseCase;
+import presentation.models.TransactionPresentationModel;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Main{
 
     public static void main(String[] args) {
-        //App.main(args);
-        Injector injector = Guice.createInjector(new DomainModule());
-        RegisterUseCase r = injector.getInstance(RegisterUseCase.class);
-        try {
-            r.register("pepman", "peppwd");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        App.main(args);
     }
 }

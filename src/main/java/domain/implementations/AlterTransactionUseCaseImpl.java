@@ -1,28 +1,26 @@
 package domain.implementations;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
-import commonDefenitions.TransactionKind;
 import data.database.CredentialsManager;
 import data.database.Database;
 import data.exceptions.UserIsNotLoggedInException;
 import data.models.TransactionDataModel;
-import di.modules.DataModule;
 import domain.interfaces.AlterTransactionUseCase;
 import presentation.models.TransactionPresentationModel;
+import presentation.models.TransactionSubmissionPresentationModel;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
 
+    @Inject
     CredentialsManager credentialsManager;
-    Database database;
 
-    public AlterTransactionUseCaseImpl() {
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-        database = injector.getInstance(Database.class);
-    }
+    @Inject
+    Database database;
 
     private TransactionDataModel getTargetTransaction(int listPosition) throws UserIsNotLoggedInException {
         long userId = credentialsManager.getLastLoggedInUser().getId();
@@ -31,16 +29,19 @@ public class AlterTransactionUseCaseImpl implements AlterTransactionUseCase {
     }
 
     @Override
-    public void alterTransaction(TransactionPresentationModel target, int listPosition) throws UserIsNotLoggedInException {
+    public void alterTransaction(TransactionSubmissionPresentationModel target, int listPosition) throws UserIsNotLoggedInException {
         TransactionDataModel targetDataModel = getTargetTransaction(listPosition);
-        targetDataModel.setTransactionName(target.getTransactionName());
-        targetDataModel.setReceiverName(target.getReceiverName());
-        targetDataModel.setSenderName(target.getSenderName());
-        targetDataModel.setDueDate(target.getDueDate());
-        targetDataModel.setCategory(target.getCategory());
+        targetDataModel.setTransactionName(target.getName());
+        targetDataModel.setReceiverName(target.getReceiver());
+        targetDataModel.setSenderName(target.getSender());
+        targetDataModel.setDueDate(
+                String.valueOf(target.getDueDate().atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli())
+        );
+        targetDataModel.setCategory("generic category");
         targetDataModel.setComment(target.getComment());
         targetDataModel.setPeriodical(target.isPeriodical());
         targetDataModel.setKind(target.getKind());
+        targetDataModel.setAmount(target.getAmount());
         database.alterTransaction(targetDataModel);
     }
 }

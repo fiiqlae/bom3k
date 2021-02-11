@@ -14,8 +14,9 @@ public class TransactionDataModel {
     private String                  comment;
     private String                  senderName;
     private String                  receiverName;
+    private float                   amount;
 
-    public TransactionDataModel(long userId, long transactionId, String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName) {
+    public TransactionDataModel(long userId, long transactionId, String transactionName, TransactionKind kind, boolean isPeriodical, String timestamp, String dueDate, String category, String comment, String senderName, String receiverName, float amount) {
         this.userId = userId;
         this.transactionId = transactionId;
         this.transactionName = transactionName;
@@ -27,6 +28,11 @@ public class TransactionDataModel {
         this.comment = comment;
         this.senderName = senderName;
         this.receiverName = receiverName;
+        this.amount = amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 
     public void setTransactionName(String transactionName) {
@@ -91,6 +97,10 @@ public class TransactionDataModel {
 
     public String getComment() {
         return comment;
+    }
+
+    public float getAmount() {
+        return amount;
     }
 
     public String getSenderName() {

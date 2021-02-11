@@ -1,47 +1,53 @@
 package data.database;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import data.database.stores.LoginStore;
+import data.database.stores.LoginStoreImpl;
 import data.exceptions.UserExistsException;
 import data.exceptions.UserIsNotLoggedInException;
 import data.models.UserAccountDataModel;
-import di.modules.DataModule;
 
 import javax.security.auth.login.LoginException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Singleton
 public class CredentialsManagerImpl implements CredentialsManager {
 
+    @Inject
     Database db;
-    UserAccountDataModel lastLoggedIn;
+    private LoginStore loginStore;
+
 
     public CredentialsManagerImpl() {
-        Injector injector = Guice.createInjector(new DataModule());
-        db = injector.getInstance(Database.class);
+        loginStore = new LoginStoreImpl(new ConnectionManagerImpl().getActiveConnection());
     }
 
     @Override
-    public UserAccountDataModel logIn(String userName, String password) throws LoginException {
+    public UserAccountDataModel logIn(String userName, String password) throws LoginException, SQLException {
         String hash = hashCredentials(userName, password);
         UserAccountDataModel account = db.selectUserByPasswordHash(hash);
         if(account == null) throw new LoginException("authentication failed");
         else {
-            lastLoggedIn = account;
+            loginStore.logIn(account.getId());
             return account;
         }
     }
 
     @Override
-    public boolean registerUser(String userName, String password) throws UserExistsException {
+    public boolean registerUser(String userName, String password) throws UserExistsException, SQLException {
         try {
             // yeeeeeeah, big brain time
-            logIn(userName, password);
+            UserAccountDataModel user = logIn(userName, password);
+            if(user != null) loginStore.logOut();
             throw new UserExistsException("user is already registered");
         } catch (LoginException e) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -52,15 +58,21 @@ public class CredentialsManagerImpl implements CredentialsManager {
                     id,
                     "Beralus",
                     "Minsk",
-                    "BYN"));
+                    "BYN", 15.0f, 5.0f));
             return true;
         }
     }
 
     @Override
     public UserAccountDataModel getLastLoggedInUser() throws UserIsNotLoggedInException {
-        if(lastLoggedIn != null) return lastLoggedIn;
+        UserAccountDataModel user = loginStore.getLastLoggedInUser();
+        if(user != null) return user;
         else throw new UserIsNotLoggedInException("user is not logged in. Log in first");
+    }
+
+    @Override
+    public void logOut() throws SQLException {
+        loginStore.logOut();
     }
 
     private String hashCredentials(String userName, String password) {

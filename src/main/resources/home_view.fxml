@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="home_tab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.views.HomeView">
+    <children>
+        <ListView fx:id="scheduled_payments" layoutX="14.0" layoutY="14.0" prefHeight="186.0" prefWidth="309.0" AnchorPane.bottomAnchor="570.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="277.0" AnchorPane.topAnchor="14.0" />
+        <Label fx:id="allowance_remaining" layoutX="335.0" layoutY="14.0" prefHeight="183.0" prefWidth="254.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="570.0" AnchorPane.leftAnchor="335.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font name="Roboto Medium" size="52.0" />
+         </font></Label>
+        <TableView fx:id="recent_payments" layoutX="14.0" layoutY="293.0" prefHeight="460.0" prefWidth="572.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="293.0">
+            <columns>
+                <TableColumn fx:id="column_amount" prefWidth="80.0" text="Amount" />
+                <TableColumn fx:id="column_sender" prefWidth="150.0" text="Sender" />
+                <TableColumn fx:id="column_receiver" prefWidth="150.0" text="Receiver" />
+                <TableColumn fx:id="column_date" prefWidth="75.0" text="Date" />
+                <TableColumn fx:id="column_is_recurring" prefWidth="70.0" text="Recurring" />
+            </columns>
+        </TableView>
+        <Button fx:id="add_transaction" layoutX="272.0" layoutY="246.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="572.0" text="Add a transaction" AnchorPane.bottomAnchor="485.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="246.0" />
+    </children>
+</AnchorPane>

@@ -1,7 +1,6 @@
 package data.database;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 import commonDefenitions.DatabaseConfig;
 import data.database.stores.AccountStore;
 import data.database.stores.AccountStoreImpl;
@@ -9,7 +8,6 @@ import data.database.stores.TransactionsStore;
 import data.database.stores.TransactionsStoreImpl;
 import data.models.TransactionDataModel;
 import data.models.UserAccountDataModel;
-import di.modules.DataModule;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,9 +24,7 @@ public class DatabaseImpl implements Database {
 
     public DatabaseImpl() {
         try {
-            Injector injector = Guice.createInjector(new DataModule());
-            ConnectionManager connectionManager = injector.getInstance(ConnectionManager.class);
-            activeConnection = connectionManager.getActiveConnection();
+            activeConnection = new ConnectionManagerImpl().getActiveConnection();
             accountStore = new AccountStoreImpl(activeConnection);
             transactionsStore = new TransactionsStoreImpl(activeConnection);
             initializeTables();
@@ -42,8 +38,10 @@ public class DatabaseImpl implements Database {
     public void initializeTables() throws SQLException {
         PreparedStatement transactions = activeConnection.prepareStatement(DatabaseConfig.queryCreateTransactions);
         PreparedStatement users = activeConnection.prepareStatement(DatabaseConfig.queryCreateUsers);
+        PreparedStatement logins = activeConnection.prepareStatement(DatabaseConfig.queryCreateLoginHistory);
         transactions.execute();
         users.execute();
+        logins.execute();
     }
 
     @Override
@@ -64,6 +62,11 @@ public class DatabaseImpl implements Database {
     @Override
     public UserAccountDataModel selectUserByPasswordHash(String hash) {
         return accountStore.selectUserByPasswordHash(hash);
+    }
+
+    @Override
+    public UserAccountDataModel selectUserById(long userId) {
+        return accountStore.selectUserById(userId);
     }
 
     @Override

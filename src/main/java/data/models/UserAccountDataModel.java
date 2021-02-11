@@ -7,14 +7,26 @@ public class UserAccountDataModel {
     private String country;
     private String city;
     private String currency;
+    private float allowancePercentage;
+    private float savingsPercentage;
 
-    public UserAccountDataModel(String username, String passwordHash, long id, String country, String city, String currency) {
+    public UserAccountDataModel(String username, String passwordHash, long id, String country, String city, String currency, float allowancePercentage, float savingsPercentage) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.id = id;
         this.country = country;
         this.city = city;
         this.currency = currency;
+        this.allowancePercentage = allowancePercentage;
+        this.savingsPercentage = savingsPercentage;
+    }
+
+    public float getAllowancePercentage() {
+        return allowancePercentage;
+    }
+
+    public float getSavingsPercentage() {
+        return savingsPercentage;
     }
 
     public String getUsername() {
@@ -39,6 +51,14 @@ public class UserAccountDataModel {
 
     public String getCurrency() {
         return currency;
+    }
+
+    public void setAllowancePercentage(float allowancePercentage) {
+        this.allowancePercentage = allowancePercentage;
+    }
+
+    public void setSavingsPercentage(float savingsPercentage) {
+        this.savingsPercentage = savingsPercentage;
     }
 
     public void setCountry(String country) {

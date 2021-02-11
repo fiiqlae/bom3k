@@ -30,7 +30,8 @@ public class Mappings {
                 resultSet.getString(7),
                 resultSet.getString(8),
                 resultSet.getString(9),
-                resultSet.getString(10)));
+                resultSet.getString(10),
+                resultSet.getFloat(12)));
     }
 
     public UserAccountDataModel toUserAccountDataModel(ResultSet resultSet) throws SQLException {
@@ -40,8 +41,9 @@ public class Mappings {
                 resultSet.getLong(3),
                 resultSet.getString(4),
                 resultSet.getString(5),
-                resultSet.getString(6)
-        );
+                resultSet.getString(6),
+                resultSet.getFloat(7),
+                resultSet.getFloat(8));
     }
 
     public PreparedStatement toUpdateTransactionQuery(TransactionDataModel transactionDataModel) throws SQLException {
@@ -57,7 +59,8 @@ public class Mappings {
         s.setString(9, transactionDataModel.getSenderName());
         s.setString(10, transactionDataModel.getReceiverName());
         s.setLong(11, transactionDataModel.getUserId());
-        s.setLong(12, transactionDataModel.getTransactionId());
+        s.setFloat(12, transactionDataModel.getAmount());
+        s.setLong(13, transactionDataModel.getTransactionId());
         return s;
     }
 
@@ -74,6 +77,7 @@ public class Mappings {
         s.setString(9, transactionDataModel.getSenderName());
         s.setString(10, transactionDataModel.getReceiverName());
         s.setLong(11, transactionDataModel.getUserId());
+        s.setFloat(12, transactionDataModel.getAmount());
         return s;
     }
 
@@ -85,6 +89,8 @@ public class Mappings {
         s.setString(4, userAccountDataModel.getCountry());
         s.setString(5, userAccountDataModel.getCity());
         s.setString(6, userAccountDataModel.getCurrency());
+        s.setFloat(7, userAccountDataModel.getAllowancePercentage());
+        s.setFloat(8, userAccountDataModel.getSavingsPercentage());
         return s;
     }
 
@@ -96,7 +102,9 @@ public class Mappings {
         s.setString(4, userAccountDataModel.getCountry());
         s.setString(5, userAccountDataModel.getCity());
         s.setString(6, userAccountDataModel.getCurrency());
-        s.setLong(7, userAccountDataModel.getId());
+        s.setFloat(7, userAccountDataModel.getAllowancePercentage());
+        s.setFloat(8, userAccountDataModel.getSavingsPercentage());
+        s.setLong(9, userAccountDataModel.getId());
         return s;
     }
 }

@@ -1,25 +1,27 @@
 package domain.implementations;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 import data.database.CredentialsManager;
 import data.models.UserAccountDataModel;
-import di.modules.DataModule;
 import domain.interfaces.LogInUseCase;
 import presentation.models.UserAccountPresentationModel;
 
 import javax.security.auth.login.LoginException;
+import java.sql.SQLException;
 
 public class LogInUseCaseImpl implements LogInUseCase {
-    private final CredentialsManager credentialsManager;
 
-    public LogInUseCaseImpl(){
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-    }
+    @Inject
+    private CredentialsManager credentialsManager;
+
     @Override
     public UserAccountPresentationModel logIn(String username, String password) throws LoginException {
-        UserAccountDataModel dataModel = credentialsManager.logIn(username, password);
+        UserAccountDataModel dataModel = null;
+        try {
+            dataModel = credentialsManager.logIn(username, password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         return new UserAccountPresentationModel(dataModel.getUsername(),
                 dataModel.getCountry(),
                 dataModel.getCity(),

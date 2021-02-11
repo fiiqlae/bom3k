@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0"
+            fx:controller="presentation.views.PreferencesView"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:id="preferences_tab">
+    <children>
+        <Label layoutX="14.0" layoutY="60.0" prefHeight="32.0" prefWidth="409.0" text="Set your income percentage, that you want to be your allowance" AnchorPane.bottomAnchor="675.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="177.0" AnchorPane.topAnchor="60.0" />
+        <Spinner fx:id="percentage_to_allowance" layoutX="431.0" layoutY="64.0" AnchorPane.bottomAnchor="678.0" AnchorPane.leftAnchor="431.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="64.0" />
+        <Separator layoutX="14.0" layoutY="111.0" prefHeight="0.0" prefWidth="577.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+        <TextField fx:id="country_input" layoutX="14.0" layoutY="252.0" prefHeight="25.0" prefWidth="393.0" promptText="Leshtrithvfolknljater" AnchorPane.bottomAnchor="490.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="252.0" />
+        <Button fx:id="set_currency" layoutX="431.0" layoutY="173.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="156.0" text="Update Currency" AnchorPane.bottomAnchor="569.0" AnchorPane.leftAnchor="431.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="173.0" />
+        <TextField fx:id="city_input" layoutX="14.0" layoutY="211.0" prefHeight="25.0" prefWidth="393.0" promptText="Hoohnshtaadt" AnchorPane.bottomAnchor="531.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="211.0" />
+        <Button fx:id="set_city" layoutX="430.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="156.0" text="Update City" AnchorPane.bottomAnchor="531.0" AnchorPane.leftAnchor="430.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="211.0" />
+        <TextField fx:id="currency_input" layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="393.0" promptText="DM" AnchorPane.bottomAnchor="569.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="193.0" AnchorPane.topAnchor="173.0" />
+        <Button fx:id="set_country" layoutX="431.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="156.0" text="Update Country" AnchorPane.bottomAnchor="490.0" AnchorPane.leftAnchor="431.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="252.0" />
+    </children>
+</AnchorPane>

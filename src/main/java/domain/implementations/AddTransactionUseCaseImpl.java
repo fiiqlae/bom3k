@@ -1,33 +1,30 @@
 package domain.implementations;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 import data.database.CredentialsManager;
 import data.database.Database;
 import data.exceptions.UserIsNotLoggedInException;
 import data.models.TransactionDataModel;
-import di.modules.DataModule;
 import domain.interfaces.AddTransactionUseCase;
 import presentation.models.TransactionPresentationModel;
+import presentation.models.TransactionSubmissionPresentationModel;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Locale;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Random;
 
 public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
 
+    @Inject
     CredentialsManager credentialsManager;
+
+    @Inject
     Database database;
 
-    public AddTransactionUseCaseImpl() {
-        Injector injector = Guice.createInjector(new DataModule());
-        credentialsManager = injector.getInstance(CredentialsManager.class);
-        database = injector.getInstance(Database.class);
-    }
-
     @Override
-    public void addTransaction(TransactionPresentationModel transaction) throws UserIsNotLoggedInException {
+    public void addTransaction(TransactionSubmissionPresentationModel transaction) throws UserIsNotLoggedInException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Instant instant = timestamp.toInstant();
         Random random = new Random();
@@ -35,16 +32,16 @@ public class AddTransactionUseCaseImpl implements AddTransactionUseCase {
         TransactionDataModel dataModel = new TransactionDataModel(
                 credentialsManager.getLastLoggedInUser().getId(),
                 id,
-                transaction.getTransactionName(),
+                transaction.getName(),
                 transaction.getKind(),
                 transaction.isPeriodical(),
-                instant.toString(),
-                transaction.getDueDate(),
-                transaction.getCategory(),
-                transaction.getCategory(),
-                transaction.getSenderName(),
-                transaction.getReceiverName()
-        );
+                String.valueOf(instant.toEpochMilli()),
+                String.valueOf(transaction.getDueDate().atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli()),
+                "generic category",
+                transaction.getComment(),
+                transaction.getSender(),
+                transaction.getReceiver(),
+                transaction.getAmount());
         database.createTransaction(dataModel);
     }
 }
